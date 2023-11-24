@@ -12,7 +12,7 @@ namespace KufarNotify
     {
         private WebRequest CreateRequest()
         {
-            WebRequest req = WebRequest.Create("https://re.kufar.by/l/minsk/snyat/kvartiru-dolgosrochno/bez-posrednikov?cur=BYR&fkn=v.and%3A1&flb=v.and%3A3&fli=v.and%3A6&gbx=b%3A27.404093144287085%2C53.80740813391278%2C27.727159855712863%2C53.969861243915965&prc=r%3A0%2C70000&size=30");
+            WebRequest req = WebRequest.Create("https://re.kufar.by/l/minsk/snyat/kvartiru-dolgosrochno/bez-posrednikov?cur=BYR&fkn=v.and%3A1&flb=v.and%3A3&fli=v.and%3A6&prc=r%3A0%2C70000&size=30&sort=lst.d");
             req.Headers.Add("content-type", "text/html; charset=utf-8");
             req.Headers.Add("vary", " Accept-Encoding");
             req.Headers.Add("cache-control", "private, no-cache, no-store, max-age=0, must-revalidate");
