@@ -37,12 +37,20 @@ namespace KufarNotify
 
         public string GetResponseString()
         {
-            var webrequest = CreateRequest();
-            WebResponse resp = webrequest.GetResponse();
-            Stream stream = resp.GetResponseStream();
-            StreamReader sr = new StreamReader(stream);
-            string response = sr.ReadToEnd();
-            return response.ToString();
+            try
+            {
+                var webrequest = CreateRequest();
+                WebResponse resp = webrequest.GetResponse();
+                Stream stream = resp.GetResponseStream();
+                StreamReader sr = new StreamReader(stream);
+                string response = sr.ReadToEnd();
+                return response.ToString();
+            }
+            catch
+            {
+                return null;
+            }
+            
         }
     }
 }

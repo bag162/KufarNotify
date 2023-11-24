@@ -70,5 +70,13 @@ namespace KufarNotify
                 bot.SendTextMessageAsync(user.Message.Chat, linq);
             }
         }
+
+        public void SendError404AllClients()
+        {
+            foreach (Update user in userList)
+            {
+                bot.SendTextMessageAsync(user.Message.Chat, "Братуля. У нас 100 ошибок 404 накопилось.");
+            }
+        }
     }
 }
