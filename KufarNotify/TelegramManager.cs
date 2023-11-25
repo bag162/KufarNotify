@@ -11,7 +11,8 @@ namespace KufarNotify
 {
     public class TelegramManager
     {
-        static List<Update> userList = new List<Update>();
+        static List<Chat> userList = new List<Chat>();
+        static Chat? serviceAccount = null;
         static ITelegramBotClient bot = new TelegramBotClient("6835347984:AAGqtGDLtt_iN4p9G64Pxn0p6jL9V2i_KcE");
 
         public TelegramManager()
@@ -38,13 +39,13 @@ namespace KufarNotify
                 var message = update.Message;
                 if (message.Text.ToLower() == "/start")
                 {
-                    if(userList.Contains(update))
+                    if(userList.Contains(update.Message.Chat))
                     {
                         await botClient.SendTextMessageAsync(message.Chat, "Ты уже помечен как черт братан, но пока что только карандашом.");
                     }
                     else
                     {
-                        userList.Add(update);
+                        userList.Add(update.Message.Chat);
                         await botClient.SendTextMessageAsync(message.Chat, "Добро пожаловать на борт, добрый путник! Вы подписаны на мои уведомления, и теперь будете получать их всегда, пока и не удалю сервер, или пока вы не удалите меня :(.");
                     }
                     return;
@@ -55,27 +56,27 @@ namespace KufarNotify
 
         public static async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
-            foreach (Update user in userList)
+            foreach (Chat user in userList)
             {
-                bot.SendTextMessageAsync(user.Message.Chat, "Братик, тут эксепшен ко мне приехал. Покажи его разрабу.");
-                bot.SendTextMessageAsync(user.Message.Chat, Newtonsoft.Json.JsonConvert.SerializeObject(exception));
+                bot.SendTextMessageAsync(user, "Братик, тут эксепшен ко мне приехал. Покажи его разрабу.");
+                bot.SendTextMessageAsync(user, Newtonsoft.Json.JsonConvert.SerializeObject(exception));
             }
         }
 
         public void SendNotidyAllClients(string linq)
         {
-            foreach(Update user in userList)
+            foreach(Chat user in userList)
             {
-                bot.SendTextMessageAsync(user.Message.Chat, "Братуля, тут новая хатка. Хватай пока еще не разбрали");
-                bot.SendTextMessageAsync(user.Message.Chat, linq);
+                bot.SendTextMessageAsync(user, "Братуля, тут новая хатка. Хватай пока еще не разбрали");
+                bot.SendTextMessageAsync(user, linq);
             }
         }
 
-        public void SendError404AllClients()
+        public void SendError404ToServiceAccount()
         {
-            foreach (Update user in userList)
+            if (serviceAccount != null)
             {
-                bot.SendTextMessageAsync(user.Message.Chat, "Братуля. У нас 100 ошибок 404 накопилось.");
+                bot.SendTextMessageAsync(serviceAccount, DateTime.Now.ToString("HH:mm:ss") + ". 404 ERROR");
             }
         }
     }

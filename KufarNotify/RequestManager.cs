@@ -35,7 +35,7 @@ namespace KufarNotify
             return req;
         }
 
-        public string GetResponseString()
+        public string? GetResponseString()
         {
             try
             {
