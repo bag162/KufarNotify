@@ -14,6 +14,8 @@ while (true)
     if (response == null)
     {
         tgManager.SendError404ToServiceAccount();
+        await Task.Delay(10000);
+        continue;
     }
     MatchCollection matches = regEx.Matches(response);
     if (matches.Count > 0)
