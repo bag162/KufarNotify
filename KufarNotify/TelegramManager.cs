@@ -37,20 +37,37 @@ namespace KufarNotify
             if (update.Type == Telegram.Bot.Types.Enums.UpdateType.Message)
             {
                 var message = update.Message;
-                if (message.Text.ToLower() == "/start")
+                switch (message.Text.ToLower())
                 {
-                    if(userList.Contains(update.Message.Chat))
-                    {
-                        await botClient.SendTextMessageAsync(message.Chat, "Ты уже помечен как черт братан, но пока что только карандашом.");
-                    }
-                    else
-                    {
-                        userList.Add(update.Message.Chat);
-                        await botClient.SendTextMessageAsync(message.Chat, "Добро пожаловать на борт, добрый путник! Вы подписаны на мои уведомления, и теперь будете получать их всегда, пока и не удалю сервер, или пока вы не удалите меня :(.");
-                    }
-                    return;
+                    case "/sacc":
+                        if (serviceAccount == null)
+                        {
+                            serviceAccount = update.Message.Chat;
+                            await botClient.SendTextMessageAsync(serviceAccount, "Ты утсановлен как сервисный аккаунт.");
+                        }
+                        else
+                        {
+                            await botClient.SendTextMessageAsync(update.Message.Chat, "Сервисный аккаунт уже установлен.");
+                        }
+                        break;
+
+                    case "/start":
+                        if (userList.Select(x => x.Id).ToList().Contains(message.Chat.Id))
+                        {
+                            await botClient.SendTextMessageAsync(message.Chat, "Ты уже помечен как черт братан, но пока что только карандашом.");
+                        }
+                        else
+                        {
+                            userList.Add(update.Message.Chat);
+                            await botClient.SendTextMessageAsync(message.Chat, "Добро пожаловать на борт, добрый путник! Вы подписаны на мои уведомления, и теперь будете получать их всегда, пока и не удалю сервер, или пока вы не удалите меня :(.");
+                        }
+                        break;
+
+                    default:
+                        await botClient.SendTextMessageAsync(message.Chat, "Не пиши мне ничего. Я все равно никак не обрабатываю твои данные, засоряешь только линию.");
+                        break;
                 }
-                await botClient.SendTextMessageAsync(message.Chat, "Не пиши мне ничего. Я все равно никак не обрабатываю твои данные, засоряешь только линию.");
+               
             }
         }
 
